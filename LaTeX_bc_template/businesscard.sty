@@ -1,0 +1,278 @@
+%% start of file `moderncvstyleclassic.sty'.
+%% Copyright 2006-2013 Xavier Danaux (xdanaux@gmail.com).
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License version 1.3c,
+% available at http://www.latex-project.org/lppl/.
+
+
+%-------------------------------------------------------------------------------
+%                identification
+%-------------------------------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{businesscard}[2014/06/29 v1.0 business card]
+
+
+%-------------------------------------------------------------------------------
+%                required packages
+%-------------------------------------------------------------------------------
+\RequirePackage{ifthen}%
+\RequirePackage{graphicx}
+\RequirePackage{fontawesome}
+\RequirePackage{geometry}
+\geometry{hmargin=20mm,vmargin=20mm}
+
+%-------------------------------------------------------------------------------
+%                style definition
+%-------------------------------------------------------------------------------
+
+\parindent0em
+\thispagestyle{empty}
+
+\newsavebox\mysavebox
+\newenvironment{imgminipage}[3]{%
+   \def\imgcmd{
+   		\ifx&#3&%
+   			%nothing
+   		\else
+   			\includegraphics[width=#2,height=#1]{#3}
+   		\fi
+   }%
+   \begin{lrbox}{\mysavebox}%
+   \begin{minipage}[][#1][t]{#2}%
+   %\begin{minipage}%
+}{%
+   \end{minipage}
+   \end{lrbox}%
+   \sbox\mysavebox{\framebox{\usebox\mysavebox}}%
+   \mbox{\rlap{\raisebox{-\dp\mysavebox}{\imgcmd}}\usebox\mysavebox}%
+}
+
+
+\newlength{\cardWidth}
+\newlength{\cardHeight}
+\setlength{\cardWidth}{8.5cm}
+\setlength{\cardHeight}{5.5cm}
+\newlength{\sepLine}
+\setlength{\sepLine}{1pt}
+\newlength{\mainBoxWidth}
+\setlength{\mainBoxWidth}{\cardWidth}
+\addtolength{\mainBoxWidth}{-2\fboxsep}
+\newlength{\headerHeight}
+\setlength{\headerHeight}{0.4\cardHeight}
+\addtolength{\headerHeight}{-2\fboxsep}
+\addtolength{\headerHeight}{-\sepLine}
+\newlength{\bottomHeight}
+\setlength{\bottomHeight}{0.6\cardHeight}
+\addtolength{\bottomHeight}{-2\fboxsep}
+\addtolength{\bottomHeight}{-\sepLine}
+\newlength{\iconWidth}
+
+\setlength{\fboxsep}{0pt} %to have no space between boxes
+
+% defines one's name
+% usage: \name{<firstname lastname>}
+\newcommand*{\name}[1]{\def\varname{#1}}
+
+% defines one's title (optional)
+% usage: \title{<title>}
+\renewcommand*{\title}[1]{\def\vartitle{#1}}
+
+% defines one's email (optional)
+% usage: \email{<email adress>}
+\newcommand*{\email}[1]{\def\varemail{#1}}
+
+% defines one's adress (optional)
+% usage: \adress{<adress>}
+\newcommand*{\adress}[1]{\def\varadress{#1}}
+
+% defines one's home page (optional)
+% usage: \homepage{<url>}
+\newcommand*{\homepage}[1]{\def\varhomepage{#1}}
+
+% defines one's phone (optional)
+% usage: \phone{<phone number>}
+\newcommand*{\phone}[1]{\def\varphone{#1}}
+
+% defines one's phone (optional)
+% usage: \phone{<phone number>}
+\newcommand*{\extrainfo}[1]{\def\varextrainfo{#1}}
+
+% defines one's logo (optional)
+% usage: \logo{<logo's path>}
+\newcommand*{\logo}[1]{\def\varlogo{#1}}
+
+% defines one's qr (optional)
+% usage: \qr{<qr's path>}
+\newcommand*{\qr}[1]{\def\varqr{#1}}%
+
+% defines one's qr (optional)
+% usage: \qr{<qr's path>}
+
+
+\def\mailsymbol{{\Large\faEnvelope}}
+\def\adresssymbol{{\Large\faHome}}
+\def\phonesymbol{{\Large\faMobilePhone}}
+\def\homepagesymbol{{\Large\faGlobe}}
+
+
+
+
+
+\newcommand{\createonecard}{
+\begin{imgminipage}{\cardHeight}{\cardWidth}{}%bgIT.jpg}
+  %\framebox{%border
+  \parbox[][\headerHeight][c]{\mainBoxWidth}{%sup
+    %\framebox{
+    \parbox{0.3\mainBoxWidth}{%logo
+    		\ifthenelse{\isundefined{\varlogo}}
+    		{\hfill}
+    		{\includegraphics[width=0.3\mainBoxWidth]{\varlogo}}
+    }
+    %}
+    %\framebox{%border
+    \hspace{3pt}
+    \parbox[c][\headerHeight][c]{0.65\mainBoxWidth}{%main info
+      {\bfseries{\LARGE \varname}} 
+
+		\ifthenelse{\isundefined{\vartitle}}
+		{}
+		{      
+      		\par
+      		\small\vartitle
+      		\hfill
+      	}
+    }
+    %}
+  }
+  %}
+
+\makebox{%
+  \hspace*{0.2cm}%bricolage immonde pour que la ligne commence à droite de la carte sans padding
+  \parbox[c]{\mainBoxWidth}{
+    \raggedleft\raisebox{1pt}{
+      \color{uni}\rule{0.8\mainBoxWidth}{0.25ex}
+    }
+  }%
+}
+ %
+  %\framebox{%border
+  \parbox[][\bottomHeight][c]{\mainBoxWidth}{%inf
+    %\framebox{%border
+    \hspace{3pt}
+    \parbox[c][0.9\bottomHeight][c]{0.64\mainBoxWidth}{%details
+    \hfill
+	\settowidth{\iconWidth}{\mailsymbol}
+	\tiny
+		%\framebox{
+		\ifthenelse{\isundefined{\varemail}}
+		{}
+		{
+		\parbox[][][c]{0.63\mainBoxWidth}{
+			\makebox[\iconWidth]{
+				\mailsymbol
+			}
+			\raisebox{3pt}{
+			%\framebox{
+				\varemail
+			%}
+			}
+		}
+		}
+		%}
+		%\framebox{
+		\ifthenelse{\isundefined{\varphone}}
+		{}
+		{
+		\parbox[][][c]{0.63\mainBoxWidth}{
+			\makebox[\iconWidth]{
+				\phonesymbol
+			}
+			\raisebox{3pt}{
+			%\framebox{
+				\varphone%
+			%}
+			}
+		}
+		}
+		%}
+%		\ifthenelse{\equal{\homepage}{}}{
+		\ifthenelse{\isundefined{\varhomepage}}
+		{}
+		{
+		%\framebox{
+		\parbox[][][c]{0.63\mainBoxWidth}{
+			\makebox[\iconWidth]{
+				\homepagesymbol
+			}
+			\raisebox{3pt}{
+			%\framebox{
+				\varhomepage
+			%}
+			}
+		}
+		%}
+		}
+		%\framebox{
+		\ifthenelse{\isundefined{\varadress}}
+		{}
+		{
+		\parbox[][][c]{0.63\mainBoxWidth}{
+			\makebox[\iconWidth]{
+				\adresssymbol
+			}
+			\raisebox{3pt}{
+			%\framebox{
+				\varadress
+			%}
+			}
+		}
+		}
+		%}
+		%\framebox{
+		\ifthenelse{\isundefined{\varextrainfo}}
+		{}
+		{
+		\parbox[][][c]{0.63\mainBoxWidth}{
+			\vspace*{5pt}
+			\makebox[\iconWidth]{
+			}
+			\varextrainfo
+		}
+		}
+		%}
+    }
+    %}
+    \hspace{3pt}
+    %\framebox{
+    \parbox{0.3\mainBoxWidth}{%qrcode
+    		\ifthenelse{\isundefined{\varqr}}
+    		{\hfill}
+    		{\includegraphics[width=0.3\mainBoxWidth]{\varqr}}
+    }
+    %}
+  }
+  %}
+\end{imgminipage}
+}
+
+\newcommand{\createcards}{
+\newcounter{counter}
+\setcounter{counter}{0}
+\whiledo{\value{counter}<8}{%
+	\ifthenelse{\isodd{\value{counter}}}%
+	{%
+		\createonecard%
+		\par%
+	}{%
+		\createonecard%
+	}%
+	\addtocounter{counter}{1}%
+}
+}
+
+
+\endinput
+
+
+%% end of file `moderncvstyleclassic.sty'.
