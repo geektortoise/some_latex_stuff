@@ -1,0 +1,76 @@
+
+% actual configuration
+\mode<presentation>
+
+\RequirePackage[absolute,verbose,overlay]{textpos}
+
+\let\Tiny=\tiny % Kills two default fontsize beamer warnings
+
+%headline
+\setbeamertemplate{headline}{
+	\grouplogo
+}
+
+%footline
+\setbeamertemplate{footline}{
+	\ublogo
+	\begin{beamercolorbox}[wd=\textwidth,ht=4ex,leftskip=1.4cm,rightskip=0.3cm]{author in head/foot}
+		\hspace{-0.15cm}\rule{\textwidth}{0.4pt}
+
+		\vspace{0.1cm}
+   		\insertdate \hspace{1cm} \inserttitle \newline 
+		\insertshortauthor \ - \insertshortinstitute \hfill \insertframenumber
+	\end{beamercolorbox}
+	\vspace*{0.1cm}
+}
+
+%define colors
+
+\definecolor{ULG-fas}{RGB}{238,95,3}
+
+%the default blue of the university of bamberg colors
+\definecolor{UBBlue}{RGB}{83,121,170}
+
+%the usage of the colors in special elements
+\setbeamercolor{title}{fg=UBBlue} % title at the main slide
+
+\setbeamercolor{frametitle}{fg=ULG-fas}
+\setbeamercolor{structure}{fg=ULG-fas}
+
+% use square bullet points instead of arrows
+\setbeamertemplate{items}[square]
+
+%Do not count the front slide
+\setcounter{framenumber}{0}
+
+
+\def \grouplogofile {images/ulg_logo}
+\def \ublogofile {images/giga_logo}
+%to position the group logo at the right-upper corner of a slide
+\newcommand{\grouplogo}{
+	%TPHorizModule and TPVertModule are the factors with which the horizontal and vertical alignment of the following textblock are calculated
+  \setlength{\TPHorizModule}{1pt}
+  \setlength{\TPVertModule}{1pt}
+  %  textblock{}{x,y}: pos(x) = x * TPHorizModule, pos(y) = y * TPVertModule
+  \begin{textblock}{1}(310,8)
+   \includegraphics[width=45pt,height=30pt]{\grouplogofile}
+  \end{textblock}
+  } 
+  
+  %
+% Includes the university logo at the lower left corner of the slide
+  \newcommand{\ublogo}{
+	%TPHorizModule and TPVertModule are the factors with which the horizontal and vertical alignment of the following textblock are calculated
+  \setlength{\TPHorizModule}{1pt}
+  \setlength{\TPVertModule}{1pt}
+  %  textblock{}{x,y}: pos(x) = x * TPHorizModule, pos(y) = y * TPVertModule
+  \begin{textblock}{1}(8,245)
+   \includegraphics[width=30pt,height=25pt]{\ublogofile}
+  \end{textblock}
+  } 
+  
+% Disable navigation symbols
+\beamertemplatenavigationsymbolsempty
+
+\mode
+<all>
